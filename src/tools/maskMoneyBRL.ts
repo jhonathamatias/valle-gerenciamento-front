@@ -1,5 +1,3 @@
-import { ChangeEvent } from "react"
-
 export function maskMoney(value: string) {
   const onlyDigits = value
     .split("")

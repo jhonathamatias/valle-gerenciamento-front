@@ -109,7 +109,7 @@ export default function ProductCreate() {
     setFormValidated(false);
     setProductCreated(false);
     setProduct({} as ProductStateInterface);
-  }, [activeStep]);
+  }, []);
 
   const isLastStep = useCallback(() => {
     return activeStep === steps.length - 1;
@@ -123,7 +123,7 @@ export default function ProductCreate() {
     if (formValidated) {
       handleNext();
     }
-  }, [formValidated]);
+  }, [formValidated, handleNext]);
 
   function getStepContent(step: number) {
     if (isFeedbackStep() && productCreated) {

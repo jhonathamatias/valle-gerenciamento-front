@@ -28,7 +28,7 @@ const ProductPriceForm = React.forwardRef(({
 }: ProductFormInterface, ref: React.Ref<HTMLFormElement>) => {
   const inputPriceRef = useRef<HTMLInputElement>({} as HTMLInputElement);
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<ProductPriceInterface>({
+  const { handleSubmit, formState: { errors }, setValue } = useForm<ProductPriceInterface>({
     resolver: yupResolver(schema)
   });
 

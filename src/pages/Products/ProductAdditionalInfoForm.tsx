@@ -30,11 +30,6 @@ const ProductAdditionalInfoForm = React.forwardRef(({
   const [sizeOptions, setSizeOptions] = useState<OptionInterface[]>([]);
   const [colorOptions, setColorOptions] = useState<OptionInterface[]>([]);
 
-  useEffect(() => {
-    getColors();
-    getSizes();
-  }, []);
-
   const getSizes = useCallback(async () => {
     try {
       const { data } = await api.get('/products/sizes');
@@ -73,6 +68,11 @@ const ProductAdditionalInfoForm = React.forwardRef(({
     }
   }, []);
 
+  useEffect(() => {
+    getColors();
+    getSizes();
+  }, [getColors, getSizes]);
+
   const handleChangeSize = (value: any) => {
     setValue("size", Number(value))
   };
@@ -81,7 +81,7 @@ const ProductAdditionalInfoForm = React.forwardRef(({
     setValue('color', Number(value))
   };
   
-  const { handleSubmit, formState: { errors }, setValue, getValues } = useForm<ProductAdditionalInfoInterface>({
+  const { handleSubmit, formState: { errors }, setValue } = useForm<ProductAdditionalInfoInterface>({
     resolver: yupResolver(schema),
     defaultValues: {
       size: product?.size,

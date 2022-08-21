@@ -1,5 +1,3 @@
-"use strict";
-
 import { STORAGE_APP_KEY } from "../constants/service";
 
 export default class AuthStorage {

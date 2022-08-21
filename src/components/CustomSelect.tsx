@@ -7,7 +7,6 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
-import { useTheme } from '@mui/material/styles';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -31,7 +30,6 @@ export default function CustomSelect({
   loading = true,
   ...rest
 }: BasicSelectProps) {
-  const theme = useTheme();
   const [state, setState] = useState<any>('');
 
   const random = Math.floor(Math.random() * 99);
@@ -42,14 +40,14 @@ export default function CustomSelect({
     if (defaultValue && loading === false) {
       setState(defaultValue);
     }
-  }, [loading]);
+  }, [loading, defaultValue]);
 
   useEffect(() => {
     if (onChangeSelect) {
       const label = document.getElementById(selectId)?.innerText || '';
       onChangeSelect(state, label);
     }
-  }, [state]);
+  }, [state, onChangeSelect, selectId]);
 
   const handleChange = (event: SelectChangeEvent, child: React.ReactNode) => {
     setState(event.target.value);
@@ -65,14 +63,13 @@ export default function CustomSelect({
           carregando opções...
         </Typography>
       </MenuItem>;
-
     }
 
     if (options.length === 0) {
       return <MenuItem value=''>Nenhuma opção</MenuItem>;
     }
 
-    options.map((option, index) => {
+    options.forEach((option, index) => {
       menuItems.push(<MenuItem key={index} value={option.value}>{option.label}</MenuItem>)
     });
 

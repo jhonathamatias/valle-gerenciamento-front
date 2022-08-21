@@ -83,7 +83,7 @@ export default function InputFileUpload({
 
   useEffect(() => {
     onChangeFile(files[0]);
-  }, [files]);
+  }, [files, onChangeFile]);
 
   useEffect(() => {
     if (defaultValue) {
