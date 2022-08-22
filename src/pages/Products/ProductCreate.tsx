@@ -14,7 +14,7 @@ import Layout from "../Layout";
 import ProductInfoForm from './ProductInfoForm';
 import ProductAdditionalInfoForm from './ProductAdditionalInfoForm';
 import ProductPriceForm from './ProductPriceForm';
-import { ProductFormInterface, ProductPayloadInterface, ProductStateInterface } from './interfaces';
+import { ProductFormInterface, ProductPayloadInterface, ProductStateInterface } from '../../interfaces/product.interface';
 
 type StepperType = {
   label: string;
@@ -35,14 +35,15 @@ function Feedback({
   productState: ProductStateInterface
 }) {
   return (
-    <Box sx={{
-      padding: 5,
-      display: 'flex',
-      flexDirection: 'column',
-      alignContent: 'center',
-      alignItems: 'center',
-    }
-    }>
+    <Box
+      sx={{
+        padding: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <ShoppingBag
         sx={{
           marginBottom: 2,
@@ -174,8 +175,8 @@ export default function ProductCreate() {
   };
 
   return (
-    <Layout
-      pageTitle="Cadastro de Produtos"
+    <
+      // pageTitle="Cadastro de Produtos"
     >
       <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -207,6 +208,6 @@ export default function ProductCreate() {
           </>
         </Paper>
       </Container>
-    </Layout>
+    </>
   );
 }

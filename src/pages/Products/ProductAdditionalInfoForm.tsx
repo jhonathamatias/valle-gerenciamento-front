@@ -8,7 +8,7 @@ import Divider from '@mui/material/Divider';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { ProductFormInterface, ProductAdditionalInfoInterface, OptionInterface } from './interfaces';
+import { ProductFormInterface, ProductAdditionalInfoInterface, OptionInterface } from '../../interfaces/product.interface';
 import api from "../../services/api";
 import CustomSelect from '../../components/CustomSelect';
 

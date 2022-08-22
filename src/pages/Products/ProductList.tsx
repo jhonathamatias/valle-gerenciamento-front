@@ -4,17 +4,19 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import AddIcon from '@mui/icons-material/Add';
-
 import Layout from "../Layout";
 import ProductGrid from './ProductGrid';
 import { Link, Outlet } from 'react-router-dom';
 
-export default function Products() {
+export default function ProductList() {
   return (
-    <Layout
-      pageTitle="Produtos"
+    <
+    //   pageTitle="Produtos"
     >
+      <Grid item xs={12} md={8} lg={9}>
+        <ProductGrid />
+      </Grid>
       <Outlet />
-    </Layout>
+    </>
   );
 }
