@@ -1,4 +1,3 @@
-
 export interface ProductDefaultInterface {}
 
 export interface ProductFormInterface {

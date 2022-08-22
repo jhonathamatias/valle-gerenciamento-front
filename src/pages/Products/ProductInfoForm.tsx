@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { SubmitHandler, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { ProductFormInterface, ProductInfoInterface } from './interfaces';
+import { ProductFormInterface, ProductInfoInterface } from '../../interfaces/product.interface';
 import InputFileUpload from '../../components/InputFileUpload';
 
 const schema = yup.object({
