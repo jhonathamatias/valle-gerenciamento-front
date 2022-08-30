@@ -27,7 +27,7 @@ try {
 
   storage.get = (key) => {
     const item = localStorage.getItem(`${prefix}:${key}`);
-    console.log(item)
+    
     if (item) {
       try {
         return JSON.parse(item);

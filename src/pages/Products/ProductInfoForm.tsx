@@ -1,14 +1,11 @@
 import React from 'react';
-
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { SubmitHandler, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { ProductFormInterface, ProductInfoInterface } from '../../interfaces/product.interface';
 import InputFileUpload from '../../components/InputFileUpload';
@@ -27,11 +24,6 @@ const ProductInfoForm = React.forwardRef(({
 }: ProductFormInterface, ref: React.Ref<HTMLFormElement>) => {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<ProductInfoInterface>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      // file: product.image,
-      // name: product.name,
-      // description: product.description
-    }
   });
 
   const onSubmit: SubmitHandler<ProductInfoInterface> = data => {

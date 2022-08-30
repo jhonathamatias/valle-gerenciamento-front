@@ -10,7 +10,6 @@ export default function useStorage(key: string): StorageHookType {
   const [state, setState] = useState<StorageValueType>(() => storage.get(key));
 
   const set = useCallback((newValue: StorageValueType) => {
-    console.log(newValue)
     storage.set(key, newValue);
     setState(newValue);
   }, [key]);

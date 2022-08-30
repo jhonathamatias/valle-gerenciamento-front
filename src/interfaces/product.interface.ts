@@ -36,8 +36,9 @@ ProductPriceInterface {}
 export interface ProductPayloadInterface {
   name: string;
   description: string;
-  image: File;
+  image: string;
   product_color_id: number;
   product_size_id: number;
   price: number;
+  size_number: number;
 }
