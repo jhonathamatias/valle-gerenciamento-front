@@ -17,17 +17,15 @@ const AuthContext = createContext<AuthContextType>(null!);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken, clearToken] = useStorage('token');
-  const [user, setUser] = useStorage('user');
   const [authenticated, setAuthenticated] = useState(Boolean(token));
 
   const login = async (user: User, callback: VoidFunction, failback: (error: any) => void) => {
     try {
       const response = await apiAuth(user.email, user.password);
-      const { details } = response.data;
+      const { token } = response.data;
 
-      setUser(details.user);
-      setToken(details.token);
-      setAuthenticated(Boolean(details.token));
+      setToken(token);
+      setAuthenticated(Boolean(token));
       callback();
     } catch (err) {
       failback(err);

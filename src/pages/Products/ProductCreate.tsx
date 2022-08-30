@@ -10,11 +10,15 @@ import Button from '@mui/material/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ShoppingBag from '@mui/icons-material/ShoppingBagOutlined';
 import Typography from '@mui/material/Typography';
-import Layout from "../Layout";
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
+
 import ProductInfoForm from './ProductInfoForm';
 import ProductAdditionalInfoForm from './ProductAdditionalInfoForm';
 import ProductPriceForm from './ProductPriceForm';
 import { ProductFormInterface, ProductPayloadInterface, ProductStateInterface } from '../../interfaces/product.interface';
+import api from '../../services/api';
+import { imageToBase64 } from '../../tools/imageConvert';
 
 type StepperType = {
   label: string;
@@ -32,7 +36,7 @@ function Feedback({
   productState
 }: {
   handleReset: Function,
-  productState: ProductStateInterface
+  productState: ProductStateInterface,
 }) {
   return (
     <Box
@@ -94,6 +98,7 @@ export default function ProductCreate() {
   const [formValidated, setFormValidated] = useState(false);
   const [product, setProduct] = useState<ProductStateInterface>({} as ProductStateInterface);
   const [productCreated, setProductCreated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleNext = useCallback(() => {
     setActiveStep(activeStep + 1);
@@ -121,7 +126,7 @@ export default function ProductCreate() {
   }, [activeStep]);
 
   useEffect(() => {
-    if (formValidated) {
+    if (!isLastStep() && formValidated) {
       handleNext();
     }
   }, [formValidated, handleNext]);
@@ -140,7 +145,6 @@ export default function ProductCreate() {
       listenerSubmit={data => {
         if (isLastStep()) {
           createProduct({ ...product, ...data });
-          setProductCreated(true);
         }
         setProduct({ ...product, ...data });
         setFormValidated(true);
@@ -151,63 +155,102 @@ export default function ProductCreate() {
     />
   };
 
+  function stepsControlButtons() {
+    return <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      {activeStep !== 0 && (
+        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+          Voltar
+        </Button>
+      )}
+
+      {isLastStep() ? (
+        <LoadingButton
+          onClick={handleFormSubmit}
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<SaveIcon />}
+          variant="contained"
+          sx={{ mt: 3, ml: 1 }}
+        >
+          Cadastrar
+        </LoadingButton>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleFormSubmit}
+          sx={{ mt: 3, ml: 1 }}
+        >
+          Próximo
+        </Button>
+      )}
+    </Box>;
+  }
+
   const handleFormSubmit = () => {
     if (formRef.current) {
       formRef.current.requestSubmit();
     }
   };
 
-  const makePayload = (productData: ProductStateInterface): ProductPayloadInterface => {
+  const makePayload = async (productData: ProductStateInterface): Promise<ProductPayloadInterface> => {
     const {
       name,
       description,
       file: image,
       size: product_size_id,
       color: product_color_id,
-      price
+      price,
+      sizeNumber
     } = productData;
 
-    return { name, description, image, product_size_id, product_color_id, price: price / 100 };
+    try {
+      const imageBase64 = await imageToBase64(image);
+
+      return {
+        name,
+        description,
+        image: imageBase64,
+        product_size_id,
+        product_color_id,
+        price,
+        size_number: sizeNumber
+      };
+    } catch (err) {
+      throw 'Convert image to base64';
+    }
   }
 
-  const createProduct = (productData: ProductStateInterface) => {
-    const payload = makePayload(productData);
+  const createProduct = async (productData: ProductStateInterface) => {
+    setLoading(true);
+
+    try {
+      const payload = await makePayload(productData);
+      const response = await api.post('/products', payload);
+
+      setLoading(false);
+      setProductCreated(true);
+      handleNext();
+    } catch (err) {
+      console.log(err);
+      setLoading(false)
+    }
   };
 
   return (
-    <
-      // pageTitle="Cadastro de Produtos"
-    >
-      <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((step) => (
-              <Step key={step.label}>
-                <StepLabel>{step.label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <>
-            {getStepContent(activeStep)}
-            {!isFeedbackStep() && (
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Voltar
-                  </Button>
-                )}
-                <Button
-                  variant="contained"
-                  onClick={handleFormSubmit}
-                  sx={{ mt: 3, ml: 1 }}
-                >
-                  {isLastStep() ? 'Cadastrar' : 'Próximo'}
-                </Button>
-              </Box>
-            )}
-          </>
-        </Paper>
-      </Container>
-    </>
+    <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
+      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          {steps.map((step) => (
+            <Step key={step.label}>
+              <StepLabel>{step.label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <>
+          {getStepContent(activeStep)}
+          {!isFeedbackStep() && stepsControlButtons()}
+        </>
+      </Paper>
+    </Container>
   );
 }
