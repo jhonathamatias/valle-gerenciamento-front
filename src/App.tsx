@@ -1,12 +1,18 @@
-
+import {
+  BrowserRouter,
+} from "react-router-dom";
 import Box from '@mui/material/Box';
-// import Products from './pages/Products';
-import ProductCreate from './pages/Products/ProductCreate';
+import { AuthProvider } from "./store/AuthContext";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <Box>
-      <ProductCreate/>
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </BrowserRouter>
     </Box>
   );
 }

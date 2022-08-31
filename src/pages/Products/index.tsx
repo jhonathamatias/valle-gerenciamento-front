@@ -1,57 +1,52 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
-import AddIcon from '@mui/icons-material/Add';
-
+import Tabs from '@mui/material/Tabs';
+import { useNavigate } from 'react-router-dom';
 import Layout from "../Layout";
-import ProductGrid from './ProductGrid';
+
+interface LinkTabProps {
+  label?: string;
+  to: string;
+}
+
+function LinkTab({ to, ...rest }: LinkTabProps) {
+  const navigate = useNavigate();
+
+  return (
+    <Tab
+      onClick={() => {
+        navigate(to);
+      }}
+      {...rest}
+    />
+  );
+}
+
+function NavTabs() {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Tabs value={value} onChange={handleChange} aria-label="nav tabs example">
+        <LinkTab label="Produtos" to="/products/list" />
+        <LinkTab label="Cadastro de Produtos" to="/products/create" />
+      </Tabs>
+    </Box>
+  );
+}
 
 export default function Products() {
   return (
-    <Layout
-      pageTitle="Produtos"
-    >
-      <Box
-        component="div"
-        sx={{
-          display: 'flex',
-          width: 120,
-          cursor: 'pointer',
-          '&:hover': {
-            '& > span': {
-              color: '#009ee3',
-            }
-          }
-        }}
-        alignItems="center"
-        flexDirection="column"
-      >
-        <Fab color="primary" aria-label="add"
-          sx={{
-            boxShadow: 'none'
-          }}
-        >
-          <AddIcon />
-        </Fab>
-        <Typography
-          variant="caption"
-          display="block"
-          gutterBottom
-          align='center'
-          mt={1}
-          mb={1}
-          color="GrayText"
-          component='span'
-        >
-          Cadastrar Produto
-        </Typography>
-      </Box>
-      <Divider />
-      <Grid item xs={12} md={8} lg={9}>
-        <ProductGrid />
-      </Grid>
+    <Layout pageTitle="Produtos">
+      <NavTabs />
+
+      <Outlet />
     </Layout>
   );
 }

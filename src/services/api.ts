@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import storage from "../utils/storage";
 import AuthStorage from './authStorage';
 
 const authStorage = new AuthStorage();
@@ -14,7 +15,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async config => {
-    const token = authStorage.getToken();
+    const token = storage.get('token');
 
     if (token) {
         config.headers = {
