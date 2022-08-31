@@ -1,3 +1,4 @@
+
 export interface ProductDefaultInterface {}
 
 export interface ProductFormInterface {
@@ -36,9 +37,8 @@ ProductPriceInterface {}
 export interface ProductPayloadInterface {
   name: string;
   description: string;
-  image: string;
+  image: File;
   product_color_id: number;
   product_size_id: number;
   price: number;
-  size_number: number;
 }

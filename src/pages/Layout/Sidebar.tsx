@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import { mainListItems } from './NavItems';
 
 import { DRAWER_WIDTH } from '../../constants/style';
-import { Link } from 'react-router-dom';
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({

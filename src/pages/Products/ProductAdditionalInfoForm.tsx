@@ -8,12 +8,12 @@ import Divider from '@mui/material/Divider';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { ProductFormInterface, ProductAdditionalInfoInterface, OptionInterface } from '../../interfaces/product.interface';
+import { ProductFormInterface, ProductAdditionalInfoInterface, OptionInterface } from './interfaces';
 import api from "../../services/api";
 import CustomSelect from '../../components/CustomSelect';
 
 const schema = yup.object({
-  size: yup.number().min(1, "Selecione um tamanho.").required("Selecione um tamanho."),
+  size: yup.number().min(1, "Selecione uma cor.").required("Selecione um tamanho."),
   sizeNumber: yup.number().required("Selecione um número."),
   color: yup.number().min(1, "Selecione uma cor.").required("Selecione uma cor."),
 }).required();
@@ -35,7 +35,7 @@ const ProductAdditionalInfoForm = React.forwardRef(({
       const { data } = await api.get('/products/sizes');
       const options: OptionInterface[] = [];
 
-      data.product_sizes.forEach((size: { id: any, size: string }) => {
+      data.sizes.forEach((size: { id: any, size: string }) => {
         options.push({
           value: size.id,
           label: size.size
@@ -54,7 +54,7 @@ const ProductAdditionalInfoForm = React.forwardRef(({
       const { data } = await api.get('/products/colors');
       const options: OptionInterface[] = [];
 
-      data.product_colors.forEach((color: { id: any, name: string }) => {
+      data.colors.forEach((color: { id: any, name: string }) => {
         options.push({
           value: color.id,
           label: color.name
