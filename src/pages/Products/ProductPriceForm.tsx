@@ -1,16 +1,13 @@
 import React, { ChangeEvent, useEffect, useRef } from 'react';
-
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { SubmitHandler, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { ProductFormInterface, ProductPriceInterface } from './interfaces';
+import { ProductFormInterface, ProductPriceInterface } from '../../interfaces/product.interface';
 import { maskMoney } from '../../tools/maskMoneyBRL';
 
 const schema = yup.object({
